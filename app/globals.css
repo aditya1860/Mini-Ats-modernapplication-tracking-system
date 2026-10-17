@@ -128,3 +128,42 @@
     @apply font-sans;
   }
 }
+
+/* Futuristic Cyber ATS Styles */
+.cyber-grid {
+  background-size: 28px 28px;
+  background-image: 
+    linear-gradient(to right, rgba(120, 140, 180, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(120, 140, 180, 0.06) 1px, transparent 1px);
+}
+
+.dark .cyber-grid {
+  background-size: 28px 28px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+.cyber-glow-cyan {
+  box-shadow: 0 0 24px -4px rgba(6, 182, 212, 0.3);
+}
+
+.cyber-glow-purple {
+  box-shadow: 0 0 24px -4px rgba(168, 85, 247, 0.3);
+}
+
+.cyber-glow-emerald {
+  box-shadow: 0 0 24px -4px rgba(16, 185, 129, 0.3);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.dark .glass-panel {
+  background: rgba(15, 18, 28, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}

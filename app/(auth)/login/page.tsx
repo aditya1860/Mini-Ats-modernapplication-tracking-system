@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Briefcase, Lock, Mail, Loader2, AlertCircle, Sparkles, Copy, Check } from "lucide-react"
+import { Briefcase, Lock, Mail, Loader2, AlertCircle, Sparkles, Copy, Check, ShieldCheck, Cpu } from "lucide-react"
 
 function LoginForm() {
   const router = useRouter()
@@ -33,7 +33,7 @@ function LoginForm() {
     try {
       setIsLoading(true)
       const res = await signIn("credentials", {
-        email,
+        email: email.trim(),
         password,
         redirect: false,
       })
@@ -44,8 +44,7 @@ function LoginForm() {
         return
       }
 
-      router.push(callbackUrl)
-      router.refresh()
+      window.location.href = callbackUrl || "/"
     } catch {
       setError("An unexpected error occurred during sign in. Please try again.")
       setIsLoading(false)
@@ -60,30 +59,43 @@ function LoginForm() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
-      <Card className="w-full max-w-md shadow-lg border-border">
-        <CardHeader className="space-y-2 text-center pb-6">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
-            <Briefcase className="h-6 w-6" />
+    <div className="relative flex min-h-screen items-center justify-center p-4 cyber-grid overflow-hidden bg-background">
+      {/* Futuristic Background Ambient Glow Orbs */}
+      <div className="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-cyan-500/10 blur-[120px] pointer-events-none" />
+      <div className="absolute -right-32 -bottom-32 h-96 w-96 rounded-full bg-indigo-500/15 blur-[140px] pointer-events-none" />
+
+      <Card className="w-full max-w-md shadow-2xl glass-panel border-border/80 relative z-10">
+        <CardHeader className="space-y-3 text-center pb-6">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-linear-to-tr from-cyan-500 via-indigo-600 to-purple-600 text-white shadow-[0_0_25px_rgba(6,182,212,0.4)]">
+            <Cpu className="h-7 w-7" />
           </div>
-          <CardTitle className="text-2xl font-bold tracking-tight">Mini ATS</CardTitle>
-          <CardDescription className="text-muted-foreground">
-            Sign in to access your recruitment portal
-          </CardDescription>
+          <div className="space-y-1">
+            <div className="flex items-center justify-center gap-2">
+              <CardTitle className="text-2xl font-black tracking-tight text-foreground">
+                Mini ATS
+              </CardTitle>
+              <span className="rounded-full bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 text-[10px] font-mono text-cyan-400">
+                v2.4
+              </span>
+            </div>
+            <CardDescription className="text-xs text-muted-foreground">
+              Neural Candidate Tracking & Recruitment Intelligence Portal
+            </CardDescription>
+          </div>
         </CardHeader>
 
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="flex items-center gap-2 rounded-lg bg-destructive/10 p-3 text-sm text-destructive border border-destructive/20">
+              <div className="flex items-center gap-2 rounded-lg bg-destructive/10 p-3 text-xs text-destructive border border-destructive/20 animate-shake">
                 <AlertCircle className="h-4 w-4 shrink-0" />
                 <span>{error}</span>
               </div>
             )}
 
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium">
-                Email address
+            <div className="space-y-1.5">
+              <Label htmlFor="email" className="text-xs font-semibold text-foreground/90">
+                Authorized Recruiter Email
               </Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none" />
@@ -93,7 +105,7 @@ function LoginForm() {
                   placeholder="recruiter@miniats.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="pl-9"
+                  className="pl-9 h-9 text-xs bg-background/80 focus:border-cyan-500/50"
                   disabled={isLoading}
                   required
                   autoComplete="email"
@@ -101,10 +113,10 @@ function LoginForm() {
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password" className="text-sm font-medium">
-                  Password
+                <Label htmlFor="password" className="text-xs font-semibold text-foreground/90">
+                  Access Key / Password
                 </Label>
               </div>
               <div className="relative">
@@ -115,7 +127,7 @@ function LoginForm() {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-9"
+                  className="pl-9 h-9 text-xs bg-background/80 focus:border-cyan-500/50"
                   disabled={isLoading}
                   required
                   autoComplete="current-password"
@@ -125,62 +137,63 @@ function LoginForm() {
 
             <Button
               type="submit"
-              className="w-full font-medium h-10 mt-2"
+              className="w-full font-semibold h-10 mt-3 text-xs bg-linear-to-r from-cyan-600 via-indigo-600 to-purple-600 hover:from-cyan-500 hover:to-purple-500 text-white shadow-md border-0"
               disabled={isLoading}
             >
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Signing in...
+                  Authenticating Core...
                 </>
               ) : (
-                "Sign In"
+                "Authorize & Enter Portal"
               )}
             </Button>
           </form>
 
-          {/* Demo credentials callout */}
-          <div className="mt-6 rounded-lg border border-primary/20 bg-primary/5 p-4 text-sm">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-1.5 font-semibold text-primary">
-                <Sparkles className="h-4 w-4" />
-                <span>Demo Credentials</span>
+          {/* Holographic Demo Credentials Box */}
+          <div className="mt-6 rounded-xl border border-cyan-500/30 bg-cyan-500/5 p-4 text-xs backdrop-blur-xs">
+            <div className="flex items-center justify-between mb-2.5">
+              <div className="flex items-center gap-1.5 font-bold text-cyan-400">
+                <Sparkles className="h-3.5 w-3.5" />
+                <span className="font-mono text-[11px] uppercase tracking-wider">Demo Credentials</span>
               </div>
               <Button
                 type="button"
                 variant="outline"
                 size="xs"
                 onClick={fillDemoCredentials}
-                className="text-xs h-7 gap-1 bg-background hover:bg-primary/10"
+                className="text-xs h-6 px-2 gap-1 bg-background border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10"
               >
                 {copied ? (
                   <>
-                    <Check className="h-3 w-3 text-green-600" />
-                    <span>Filled!</span>
+                    <Check className="h-3 w-3 text-emerald-400" />
+                    <span>Auto-Filled</span>
                   </>
                 ) : (
                   <>
                     <Copy className="h-3 w-3" />
-                    <span>Auto Fill</span>
+                    <span>One-Click Fill</span>
                   </>
                 )}
               </Button>
             </div>
-            <div className="space-y-1 font-mono text-xs text-muted-foreground">
+            <div className="space-y-1 font-mono text-[11px] text-muted-foreground">
               <div className="flex justify-between">
-                <span className="font-sans font-medium text-foreground">Email:</span>
-                <span>recruiter@miniats.com</span>
+                <span className="font-sans text-foreground/80">Email:</span>
+                <span className="text-foreground font-semibold">recruiter@miniats.com</span>
               </div>
               <div className="flex justify-between">
-                <span className="font-sans font-medium text-foreground">Password:</span>
-                <span>Demo@1234</span>
+                <span className="font-sans text-foreground/80">Password:</span>
+                <span className="text-foreground font-semibold">Demo@1234</span>
               </div>
             </div>
           </div>
         </CardContent>
 
-        <CardFooter className="flex justify-center border-t border-border pt-4 text-xs text-muted-foreground">
-          Mini ATS — Production Ready Applicant Tracking
+        <CardFooter className="flex items-center justify-center gap-2 border-t border-border/50 pt-4 text-[11px] font-mono text-muted-foreground">
+          <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+          <span>AES-256 JWT ENCRYPTED RECRUITMENT SUITE</span>
         </CardFooter>
       </Card>
     </div>
@@ -189,11 +202,13 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={
-      <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-background p-4 cyber-grid">
+          <Loader2 className="h-8 w-8 animate-spin text-cyan-400" />
+        </div>
+      }
+    >
       <LoginForm />
     </Suspense>
   )
